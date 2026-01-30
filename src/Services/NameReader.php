@@ -9,20 +9,26 @@ use App\Contracts\ReaderInterface;
 /**
  * Class NameReader
  *
- * Failing implementation for TDD.
+ * Reads a list of names from a file.
  */
 class NameReader implements ReaderInterface
 {
     /**
-     * Attempt to read names from a file.
-     * Currently returns an empty array to fail the tests.
+     * Reads names from a file.
      *
-     * @param string $filePath
-     * @return string[]
+     * @param string $filePath Path to the file
+     * @return string[] Array of names
+     *
+     * @throws \RuntimeException if file is not readable
      */
     public function read(string $filePath): array
     {
-        // FAILING IMPLEMENTATION: always returns empty array
-        return [];
+        if (!is_readable($filePath)) {
+            throw new \RuntimeException("File not readable: {$filePath}");
+        }
+
+        $lines = file($filePath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+
+        return array_map('trim', $lines);
     }
 }
