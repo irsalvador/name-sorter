@@ -1,0 +1,19 @@
+# Composer dependencies
+/vendor/
+
+# PHPUnit cache
+.phpunit.result.cache
+
+# Generated output file
+sorted-names-list.txt
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDEs
+.idea/
+.vscode/
+
+# Logs
+*.log
