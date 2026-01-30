@@ -2,36 +2,37 @@
 
 namespace NameSorter;
 
+use App\Services\NameReader;
+use App\Services\NameSorter;
+use App\Services\NameWriter;
+
 /**
  * Class Application
  *
- * Handles loading, sorting, and outputting names for the Name Sorter project.
+ * Orchestrates the Name Sorter services:
+ * reading names from a file, sorting them, and writing the output.
  *
  * @package NameSorter
  */
 class Application
 {
     /**
-     * Array of names to sort.
+     * Array of loaded names.
      *
      * @var string[]
      */
     private array $names = [];
 
     /**
-     * Load names from a file.
+     * Load names from a file using the NameReader service.
      *
-     * @param string $filePath Path to the file containing names, one per line.
-     * @throws \InvalidArgumentException If the file does not exist.
+     * @param string $filePath Path to the input file
+     * @throws \InvalidArgumentException If the file is not readable
      */
     public function loadFromFile(string $filePath): void
     {
-        if (!file_exists($filePath)) {
-            throw new \InvalidArgumentException("File not found: $filePath");
-        }
-
-        $contents = file($filePath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-        $this->names = array_map('trim', $contents);
+        $reader = new NameReader();
+        $this->names = $reader->read($filePath);
     }
 
     /**
@@ -45,29 +46,29 @@ class Application
     }
 
     /**
-     * Sort names alphabetically (case-insensitive).
+     * Sort names using the NameSorter service.
      *
-     * @return string[] Sorted array of names.
+     * @return string[] Sorted array of names
      */
     public function sortNames(): array
     {
-        $names = $this->names;
-        sort($names, SORT_STRING | SORT_FLAG_CASE);
-        return $names;
+        $sorter = new NameSorter();
+        return $sorter->sort($this->names);
     }
 
     /**
-     * Output sorted names to standard output.
+     * Output sorted names using the NameWriter service.
+     *
+     * @param string $outputFile Optional output file name. Defaults to 'sorted-names-list.txt'.
      */
-    public function outputSortedNames(): void
+    public function outputSortedNames(string $outputFile = 'sorted-names-list.txt'): void
     {
-        foreach ($this->sortNames() as $name) {
-            echo $name . PHP_EOL;
-        }
+        $writer = new NameWriter();
+        $writer->write($this->sortNames(), $outputFile);
     }
 
     /**
-     * Get the loaded names.
+     * Get the loaded names without sorting.
      *
      * @return string[]
      */
