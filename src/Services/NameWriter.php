@@ -9,19 +9,23 @@ use App\Contracts\WriterInterface;
 /**
  * Class NameWriter
  *
- * Failing implementation for TDD.
+ * Writes a list of names to a file and prints them to console.
  */
 class NameWriter implements WriterInterface
 {
     /**
-     * Attempt to write names to file.
-     * Currently does nothing to fail the tests.
+     * Writes names to a file and prints them.
      *
-     * @param string[] $names
-     * @param string $filePath
+     * @param string[] $names Array of names
+     * @param string $filePath Path to the output file
      */
     public function write(array $names, string $filePath): void
     {
-        // FAILING IMPLEMENTATION: does nothing
+        $content = implode(PHP_EOL, $names) . PHP_EOL;
+        file_put_contents($filePath, $content);
+
+        foreach ($names as $name) {
+            echo $name . PHP_EOL;
+        }
     }
 }
