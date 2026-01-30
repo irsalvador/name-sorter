@@ -6,6 +6,7 @@
 
 # Generated output file
 sorted-names-list.txt
+unsorted-names-list.txt
 
 # OS files
 .DS_Store

@@ -1,0 +1,44 @@
+#!/usr/bin/env php
+<?php
+
+/**
+ * CLI script for Name Sorter
+ *
+ * Reads names from a file, sorts them by last name, and prints to stdout.
+ *
+ * Usage:
+ *   php bin/name-sorter <input_file>
+ */
+
+require_once __DIR__ . '/../vendor/autoload.php';
+
+use App\Services\NameReader;
+use App\Services\NameSorter;
+use App\Services\NameWriter;
+
+if ($argc < 2) {
+    fwrite(STDERR, "Usage: php bin/name-sorter <input_file>\n");
+    exit(1);
+}
+
+$inputFile = $argv[1];
+$outputFile = $argv[2] ?? 'sorted-names-list.txt'; // optional output file
+
+try {
+    $reader = new NameReader();
+    $sorter = new NameSorter();
+    $writer = new NameWriter();
+
+    // Read names from file
+    $names = $reader->read($inputFile);
+
+    // Sort names by last name
+    $sortedNames = $sorter->sort($names);
+
+    // Write to file and print to console
+    $writer->write($sortedNames, $outputFile);
+
+} catch (\Exception $e) {
+    fwrite(STDERR, "Error: " . $e->getMessage() . "\n");
+    exit(1);
+}
