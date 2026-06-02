@@ -61,7 +61,7 @@ class Application
      *
      * @param string $outputFile Optional output file name. Defaults to 'sorted-names-list.txt'.
      */
-    public function outputSortedNames(string $outputFile = 'sorted-names-list.txt'): void
+    public function outputSortedNames(string $outputFile = 'sorted-names-list.csv'): void
     {
         $writer = new NameWriter();
         $writer->write($this->sortNames(), $outputFile);
