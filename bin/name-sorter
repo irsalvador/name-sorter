@@ -22,7 +22,7 @@ if ($argc < 2) {
 }
 
 $inputFile = $argv[1];
-$outputFile = $argv[2] ?? 'sorted-names-list.txt'; // optional output file
+$outputFile = $argv[2] ?? 'sorted-names-list.csv'; // optional output file
 
 try {
     $reader = new NameReader();

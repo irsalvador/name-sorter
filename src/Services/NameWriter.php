@@ -21,8 +21,11 @@ class NameWriter implements WriterInterface
      */
     public function write(array $names, string $filePath): void
     {
-        $content = implode(PHP_EOL, $names) . PHP_EOL;
-        file_put_contents($filePath, $content);
+        $handle = fopen($filePath, 'w');
+        foreach ($names as $name) {
+            fputcsv($handle, [$name]);
+        }
+        fclose($handle);
 
         foreach ($names as $name) {
             echo $name . PHP_EOL;
